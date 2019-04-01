@@ -47,7 +47,9 @@ int main()
     int n,i,j;
     printf("--------------------------ENTER THE NUMBER OF PROGRAMS TO BE STORED--------------------------\n");
     scanf("%d",&n);
+
     node* arr = (node*)malloc(n*sizeof(node)); /// ALLOCATING MEMORY TO ARRAY OF STRUCTURE NODE
+
     printf("----------------------------------ENTER PROGRAM LENGTHS---------------------------------------\n");
     for(i=0;i<n;i++) /// INPUT OF LENGTH FOR EACH PROFRAM
     {
@@ -56,9 +58,12 @@ int main()
         scanf("%d",&arr[i].prg_length);
         arr[i].prog_no=i+1;
     }
+
     heap_sort(arr,n);  /// HEAP SORT FOR PLACING THE PROGRAM WIHT MINIMUM PROGRAM LENGTH
+
     float sum=0;
     float MRT=0; /// MEAN RETRIEVAL TIME
+
     for(i=0;i<n;i++)
     {
         for(j=0;j<=i;j++)
@@ -66,13 +71,51 @@ int main()
             sum+=arr[j].prg_length;
         }
     }
+
     MRT=sum/n;
+
     printf("-----MEAN RETRIEVAL TIME : %f\n",MRT);
-    printf("-----ORDER IN WHICH PROGRAM CAN BE ARRANGED ON TAPE TO GET THE ABOVE MRT:\n");
+
+
+    int tape_number;
+    printf("-----------------ENTER THE NUMBER OF TAPES ON WHICH YOU WANT TO ARRANGE YOUR PROGRAM-----------\n");
+    scanf("%d",&tape_number);
+
+
+    int* *arrangement_array[tape_number];
+    for(i=0;i<tape_number;i++)
+    {
+        arrangement_array[i]=(int*)calloc(n,sizeof(int));
+    }
+
+    j=0;
     for(i=0;i<n;i++)
     {
-        printf("%d || ",arr[i].prog_no);
+        arrangement_array[(i%tape_number)][j]=arr[i].prog_no;
+        if((i%tape_number)+1==tape_number)
+        {
+            j++;
+        }
     }
-    printf("\nTHANKS");
+
+    for(i=0;i<tape_number;i++)
+    {
+        printf("TAPE %d :",i+1);
+        for(j=0;j<n;j++)
+        {
+            if(arrangement_array[i][j]!=0)
+            {
+                printf("%d ||",arrangement_array[i][j]);
+            }
+            else
+            {
+                break;
+            }
+        }
+        printf("\n");
+    }
+
+    printf("\n-------------------------------------------------THANKS :) --------------------------------------------");
     return 0;
+
 }
